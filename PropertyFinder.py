@@ -37,7 +37,7 @@ class PropertyFinderScraper:
                         filtered_hrefs = [link.get_attribute('href') for link in all_links if
                                           link is not None and link.get_attribute('href').startswith(prefix)]
 
-                        print(filtered_hrefs)
+                         
                         for href in filtered_hrefs:
                             if all(href != entry['link'] for entry in self.ads):
                                 self.ads.append({'link': href, 'type': adtype})
@@ -63,7 +63,7 @@ class PropertyFinderScraper:
                 filtered_hrefs = [link.get_attribute('href') for link in all_links if
                                   link is not None and link.get_attribute('href').startswith(prefix)]
 
-                print(filtered_hrefs)
+                 
                 for href in filtered_hrefs:
                     if all(href != entry['link'] for entry in self.ads):
                         self.ads.append({'link': href, 'type': adtype})
@@ -187,19 +187,13 @@ class PropertyFinderScraper:
                     image = Image.open(image_data)
                     qr_codes = decode(image)
                     if qr_codes:
-                        qr_code_data = qr_codes[0].data.decode("utf-8")
-                        print(f"QR Code Data: {qr_code_data}")
+                        qr_code_data = qr_codes[0].data.decode("utf-8") 
     
                         # Assuming the URL is in the QR code data
                         url_start_index = qr_code_data.find("https://")
                         if url_start_index != -1:
                             url = qr_code_data[url_start_index:]
-                            qrcodeUrl =url
-                            print(f"Extracted URL: {url}")
-                        else:
-                         print("No URL found in QR code data")
-                    else:
-                        print("No QR code found on the canvas") 
+                            qrcodeUrl =url 
                     return all_content, qrcodeUrl 
                 except StaleElementReferenceException:
                     # Handle StaleElementReferenceException by retrying
@@ -254,7 +248,7 @@ class PropertyFinderScraper:
             "RERA": RERA_answer,
             "AD_TYPE": adtype
         }
-        print(data)
+         
         return data
 
       
@@ -268,11 +262,10 @@ class PropertyFinderScraper:
     def run_extraction(self):
         self.extract_PF_ads() 
         data_frames = [] 
-        print(self.ads)
+         
         for link_info in self.ads: 
             link = link_info['link']
-            ad_type = link_info['type'] 
-            print(f"Link: {link}, Ad Type: {ad_type}") 
+            ad_type = link_info['type']  
             content, qr_code = self.retry_on_failure(self.extract_details, link)
             data = self.extract_information_per_content("PropertyFinder", content, link, qr_code, ad_type)
             data_frames.append(pd.DataFrame([data]))  
@@ -282,8 +275,7 @@ class PropertyFinderScraper:
 
 
  
-
-
+ 
 if __name__ == "__main__":
     web_extractor = PropertyFinderScraper()
     web_extractor.run_extraction()
